@@ -10,3 +10,79 @@
     border-width: 2px;
     border-color: lightgrey;
 }
+
+div.vis-network div.vis-manipulation div.vis-button.vis-add {
+    background-image: url('./img/plus-circle.svg');
+    margin-top: -10px;
+}
+
+div.vis-network div.vis-manipulation div.vis-button.vis-connect {
+    background-image: url('./img/pencil-alt.svg');
+    margin-top: -10px;
+}
+
+div.vis-network div.vis-manipulation div.vis-button.vis-back {
+    background-image: url('./img/arrow-circle-left.svg');
+    margin-top: -10px;
+}
+
+div.vis-network div.vis-manipulation div.vis-button, div.vis-network div.vis-edit-mode div.vis-button {
+    border-radius: 0px;
+}
+
+div.vis-network div.vis-manipulation div.vis-button:active {
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    color: #b13728;
+}
+
+div.vis-network div.vis-manipulation div.vis-button:hover {
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    color: #b13728;
+}
+
+div.vis-network div.vis-manipulation div.vis-button:focus {
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    color: #b13728;
+}
+
+div.vis-network div.vis-manipulation {
+    padding-top: 20px;
+}
+
+div.vis-network div.vis-manipulation div.vis-separator-line {
+    margin: -12px 7px 0px 15px;
+    height: 30px;
+}
+
+div.vis-network div.vis-manipulation div.vis-button.vis-none:active {
+    background-color: #fcfcfc;
+    border-radius: 0px;
+    color: black;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
+}
+
+div.vis-network div.vis-manipulation div.vis-button.vis-none:focus {
+    background-color: #fcfcfc;
+    border-radius: 0px;
+    color: black;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
+}
+
+div.vis-network div.vis-manipulation div.vis-button.vis-none:hover {
+    background-color: #fcfcfc;
+    border-radius: 0px;
+    color: black;
+    box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.0);
+}
+
+
+div.vis-network div.vis-manipulation div.vis-button.vis-none div.vis-label{
+    margin-top: -10px;
+}
+
+div.vis-close{
+    visibility: hidden;
+}
