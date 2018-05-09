@@ -26,6 +26,11 @@ div.vis-network div.vis-manipulation div.vis-button.vis-back {
     margin-top: -10px;
 }
 
+div.vis-network div.vis-manipulation div.vis-button.vis-delete {
+    background-image: url('./img/trash-alt.svg');
+    margin-top: -10px;
+}
+
 div.vis-network div.vis-manipulation div.vis-button, div.vis-network div.vis-edit-mode div.vis-button {
     border-radius: 0px;
 }
