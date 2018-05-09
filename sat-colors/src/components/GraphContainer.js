@@ -2,6 +2,15 @@ import React, { Component } from 'react';
 import '../../node_modules/vis/dist/vis.css';
 let vis = require('vis');
 
+var options = {
+    manipulation: {
+        enabled: true,
+        initiallyActive: true,
+        deleteNode: true,
+        deleteEdge: true,
+    }
+};
+
 var nodes = new vis.DataSet([
     {id: 1, label: 'Node 1'},
     {id: 2, label: 'Node 2'},
@@ -23,21 +32,21 @@ var data = {
     edges: edges
 };
 
-var options = {};
-
 export default class GraphContainer extends Component {
     constructor() {
         super();
     }
 
     componentDidMount() {
-        var container = document.getElementById('container');
+        var container = document.getElementById('graph');
         var network = new vis.Network(container, data, options);
     }
 
     render() {
         return (
-            <div id="container">
+            <div className="GraphContainer--container">
+                <div id="graph">
+                </div>
             </div>
         );
     }
