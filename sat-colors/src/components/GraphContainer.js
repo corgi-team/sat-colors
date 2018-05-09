@@ -8,6 +8,21 @@ var options = {
         initiallyActive: true,
         deleteNode: true,
         deleteEdge: true,
+    },
+    physics: {
+        enabled: false,
+    },
+    nodes: {
+        borderWidth: 1,
+        borderWidthSelected: 2,
+        color: {
+            border: '#337ab7',
+            background: '#5bc0de',
+            highlight: {
+                border: '#337ab7',
+                background: '#5bc0de8c'
+            }
+        }
     }
 };
 
