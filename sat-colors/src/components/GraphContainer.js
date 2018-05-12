@@ -13,6 +13,7 @@ var options = {
     physics: {
         enabled: false,
     },
+    label: undefined,
     nodes: {
         borderWidth: 1,
         borderWidthSelected: 2,
