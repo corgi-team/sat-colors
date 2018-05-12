@@ -1,3 +1,4 @@
+/* Graph CSS */
 .GraphContainer--container {
     margin-top: 60px;
 }
@@ -97,3 +98,4 @@ div.vis-network div.vis-manipulation div.vis-button.vis-none div.vis-label{
 div.vis-close{
     visibility: hidden;
 }
+/* end Graph CSS */
