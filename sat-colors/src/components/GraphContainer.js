@@ -16,13 +16,17 @@ var options = {
         borderWidth: 1,
         borderWidthSelected: 2,
         color: {
-            border: '#337ab7',
-            background: '#5bc0de',
+            border: '#000',
+            background: '#fff',
             highlight: {
-                border: '#337ab7',
-                background: '#5bc0de8c'
+                border: '#000',
+                background: '#e3e3e3'
             }
-        }
+        },
+        font : {
+            color: '#000',
+        },
+        shape: 'circle'
     }
 };
 
