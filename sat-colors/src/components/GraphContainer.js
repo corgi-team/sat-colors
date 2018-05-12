@@ -51,7 +51,7 @@ export default class GraphContainer extends Component {
                     color: '#000',
                     align: 'center',
                 },
-                shape: 'elipse'
+                shape: 'ellipse'
             }
         };
 
