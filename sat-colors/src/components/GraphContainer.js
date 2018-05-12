@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../../node_modules/vis/dist/vis.css';
 let vis = require('vis');
+var network;
 
 var options = {
     manipulation: {
@@ -30,6 +31,14 @@ var options = {
 export default class GraphContainer extends Component {
     constructor() {
         super();
+
+        this.state = {
+            values : []
+        }
+
+        this.exportNetwork = this.exportNetwork.bind(this);
+        this.objectToArray = this.objectToArray.bind(this);
+        this.addConnections = this.addConnections.bind(this);
     }
 
     componentDidMount() {
@@ -43,7 +52,29 @@ export default class GraphContainer extends Component {
         }
 
         var graphContainer = document.getElementById('graph');
-        var network = new vis.Network(graphContainer, data, options);
+        network = new vis.Network(graphContainer, data, options);
+    }
+
+    exportNetwork() {
+        var nodes = this.objectToArray(network.getPositions());
+        nodes.forEach(this.addConnections);
+
+        this.setState({
+            values : nodes
+        })
+    }
+
+    // Create the object with x, y and id
+    objectToArray(object) {
+        return Object.keys(object).map((key) => {
+            object[key].id = key;
+            return object[key];
+        });
+    }
+
+    // Find the connections for each node
+    addConnections(node) {
+        node.connections = network.getConnectedNodes(node.id);
     }
 
     render() {
@@ -51,6 +82,8 @@ export default class GraphContainer extends Component {
             <div className="GraphContainer--container">
                 <div id="graph">
                 </div>
+
+                <button onClick={this.exportNetwork}>Save</button>
             </div>
         );
     }
