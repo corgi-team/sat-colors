@@ -2,34 +2,8 @@ import React, { Component } from 'react';
 import '../../node_modules/vis/dist/vis.css';
 let vis = require('vis');
 var network;
-
-var options = {
-    manipulation: {
-        enabled: true,
-        initiallyActive: true,
-        deleteNode: true,
-        deleteEdge: true,
-    },
-    physics: {
-        enabled: false,
-    },
-    nodes: {
-        borderWidth: 1,
-        borderWidthSelected: 2,
-        color: {
-            border: '#000',
-            background: '#fff',
-            highlight: {
-                border: '#000',
-                background: '#e3e3e3'
-            }
-        },
-        font : {
-            color: '#000',
-        },
-        shape: 'circle'
-    }
-};
+var options;
+var id = 0;
 
 
 export default class GraphContainer extends Component {
@@ -43,12 +17,43 @@ export default class GraphContainer extends Component {
         this.exportNetwork = this.exportNetwork.bind(this);
         this.objectToArray = this.objectToArray.bind(this);
         this.addConnections = this.addConnections.bind(this);
+        this.addNode = this.addNode.bind(this);
     }
 
     componentDidMount() {
         // Initialize the graph
         let nodes = new vis.DataSet([]);
         let edges = new vis.DataSet([]);
+
+        options = {
+            manipulation: {
+                enabled: true,
+                initiallyActive: true,
+                deleteNode: true,
+                deleteEdge: true,
+                addNode: this.addNode
+            },
+            physics: {
+                enabled: false,
+            },
+            nodes: {
+                borderWidth: 1,
+                borderWidthSelected: 2,
+                color: {
+                    border: '#000',
+                    background: '#fff',
+                    highlight: {
+                        border: '#000',
+                        background: '#e3e3e3'
+                    }
+                },
+                font : {
+                    color: '#000',
+                },
+                shape: 'circle'
+            }
+        };
+        
 
         let data = {
             nodes: nodes,
@@ -57,6 +62,14 @@ export default class GraphContainer extends Component {
 
         var graphContainer = document.getElementById('graph');
         network = new vis.Network(graphContainer, data, options);
+    }
+
+    addNode(node, callback) {
+        node.label = id.toString();
+        node.id = id;
+        id += 1;
+
+        callback(node);
     }
 
     exportNetwork() {
