@@ -77,9 +77,7 @@ export default class GraphContainer extends Component {
         var nodes = this.objectToArray(network.getPositions());
         nodes.forEach(this.addConnections);
 
-        this.setState({
-            values : nodes
-        })
+        this.props.generateJSON(nodes)
     }
 
     // Create the object with x, y and id
