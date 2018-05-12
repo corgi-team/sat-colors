@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import '../../node_modules/vis/dist/vis.css';
 let vis = require('vis');
 var network;
+
 var options;
 var id = 0;
-
 
 export default class GraphContainer extends Component {
     constructor() {
@@ -49,11 +49,12 @@ export default class GraphContainer extends Component {
                 },
                 font : {
                     color: '#000',
+                    align: 'center',
                 },
-                shape: 'circle'
+                shape: 'elipse'
             }
         };
-        
+
 
         let data = {
             nodes: nodes,
