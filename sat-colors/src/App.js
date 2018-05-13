@@ -11,7 +11,7 @@ class App extends Component {
 
         this.state = {
             finalJSON : {},
-            colors : 3  // TODO: update colors
+            colors: null
         }
 
         this.generateJSON = this.generateJSON.bind(this);
@@ -19,6 +19,7 @@ class App extends Component {
         this.generateLinks = this.generateLinks.bind(this);
         this.checkLinks = this.checkLinks.bind(this);
         this.generateNodes = this.generateNodes.bind(this);
+        this.handleChangeColor = this.handleChangeColor.bind(this);
     }
 
     generateJSON(nodes) {
@@ -36,7 +37,8 @@ class App extends Component {
     generateColors() {
         var letters = '0123456789ABCDEF';
         let colors = []
-        for (let y = 0; y < this.state.colors; y++) {
+        let number = this.state.colors ? Number(this.state.colors) : 3
+        for (let y = 0; y < number; y++) {
             let color = '#';
             for (var i = 0; i < 6; i++) {
                 color += letters[Math.floor(Math.random() * 16)];
@@ -84,13 +86,22 @@ class App extends Component {
         return array;
     }
 
+    handleChangeColor(e) {
+        this.setState({
+            colors: e.target.value
+        })
+    }
+
     render() {
         return (
             <div className="App">
                 <Banner />
 
                 <div className="App-container">
-                <Settings />
+                <Settings 
+                    colors={this.state.colors}
+                    handleChangeColor={this.handleChangeColor}
+                />
                 <GraphContainer 
                     generateJSON={this.generateJSON}/>
                 </div>
