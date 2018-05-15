@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../../node_modules/vis/dist/vis.css';
+import {Button } from 'react-bootstrap';
+
 let vis = require('vis');
 var network;
 
@@ -52,6 +54,9 @@ export default class GraphContainer extends Component {
                     align: 'center',
                 },
                 shape: 'ellipse'
+            },
+            layout: {
+                randomSeed: undefined
             }
         };
 
@@ -93,13 +98,14 @@ export default class GraphContainer extends Component {
         node.connections = network.getConnectedNodes(node.id);
     }
 
+
+
     render() {
         return (
             <div className="GraphContainer--container">
+                <Button onClick={this.exportNetwork}>SAT</Button>
                 <div id="graph">
                 </div>
-
-                <button onClick={this.exportNetwork}>Save</button>
             </div>
         );
     }
