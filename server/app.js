@@ -13,7 +13,7 @@ app.get('/', function(req, res){
 });
 
 app.post('/problem', function(req, res){
-  // fs.writeFileSync('solver/graph.json', JSON.stringify(req.body));
+  fs.writeFileSync('solver/graph.json', JSON.stringify(req.body));
 
   const child = exec('cd solver && python mapcolor.py graph.json', (error, stdout, stderr) => {
     if (error) {
