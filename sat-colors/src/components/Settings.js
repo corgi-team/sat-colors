@@ -6,10 +6,11 @@ export default class Settings extends Component {
         super(props, context);
 
         this.state = {
-            nodes: ''
-        };
+            nodes: props.nodes
+        }
 
         this.getValidationStateNumberColor = this.getValidationStateNumberColor.bind(this);
+        this.getValidationStateNumberNode = this.getValidationStateNumberNode.bind(this);
         this.handleChangeNode = this.handleChangeNode.bind(this);
         this.handleSubmitNode = this.handleSubmitNode.bind(this);
     }
@@ -24,53 +25,49 @@ export default class Settings extends Component {
         return 'error';
     }
 
-      getValidationStateNumberNode() {
-        if(!isNaN(parseFloat(this.state.nodes)) && isFinite(this.state.nodes)){
+    getValidationStateNumberNode() {
+        if (!isNaN(parseFloat(this.state.nodes)) && isFinite(this.state.nodes)) {
             return 'success';
         }
         return 'error';
-      }
+    }
 
-      handleChangeNode(e) {
-        this.setState({ nodes: e.target.value });
-      }
+    handleChangeNode(e) {
+        this.setState({
+            nodes: e.target.value
+        })
+    }
 
-      handleSubmitNode(e) {
-        alert('Number of nodes: ' + this.state.nodes);
-        e.preventDefault();
-      }
-
-
+    handleSubmitNode(e) {
+        this.props.handleChangeNodes(this.state.nodes)
+    }
 
     render() {
         return (
             <div className="Settings">
-                {/* Choose number of nodes:
-                <Form inline onSubmit={this.handleSubmitNode}>
-                    <FormGroup controlId="formNodesNumber" validationState={this.getValidationStateNumberNode()} inline>
+                Choose number of nodes:
+                <div className="nodes-container">
+                    <FormGroup controlId="formNodesNumber" validationState={this.getValidationStateNumberNode()}>
                         <FormControl
                             type="text"
                             value={this.state.nodes}
                             placeholder="default: null"
                             onChange={this.handleChangeNode}
                         />
-                        </FormGroup>
-                        <FormControl.Feedback/>
-                        <Button type="submit">Generate</Button>
-                </ Form> */}
+                    </FormGroup>
+                    <Button type="submit" onClick={this.handleSubmitNode}>Generate</Button>
+                </div>
 
                 Choose number of colors:
-                <Form>
-                    <FormGroup controlId="formColorNumber" validationState={this.getValidationStateNumberColor()}>
+                  <FormGroup controlId="formColorNumber" validationState={this.getValidationStateNumberColor()}>
                         <FormControl
                             type="text"
                             value={this.state.colors}
                             placeholder="default: 3"
                             onChange={this.props.handleChangeColor}
                         />
-                        <FormControl.Feedback />
-                    </FormGroup>
-                </ Form>
+                      <FormControl.Feedback />
+                  </FormGroup>
             </div>
         );
     }

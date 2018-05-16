@@ -101,3 +101,9 @@ div.vis-close{
     display: flex;
     justify-content: space-around;
 }
+
+.nodes-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}

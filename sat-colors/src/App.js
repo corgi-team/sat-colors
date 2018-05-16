@@ -11,7 +11,8 @@ class App extends Component {
 
         this.state = {
             finalJSON : {},
-            colors: null
+            colors: null,
+            nodes: null
         }
 
         this.generateJSON = this.generateJSON.bind(this);
@@ -20,6 +21,7 @@ class App extends Component {
         this.checkLinks = this.checkLinks.bind(this);
         this.generateNodes = this.generateNodes.bind(this);
         this.handleChangeColor = this.handleChangeColor.bind(this);
+        this.handleChangeNodes = this.handleChangeNodes.bind(this);
         // this.randomGenerateGraph = this.randomGenerateGraph.bind(this);
     }
 
@@ -137,10 +139,15 @@ class App extends Component {
     //     return {nodes:nodes, edges:edges};
     // }
 
-
     handleChangeColor(e) {
         this.setState({
             colors: e.target.value
+        })
+    }
+
+    handleChangeNodes(nodes) {
+        this.setState({
+            nodes: nodes
         })
     }
 
@@ -153,9 +160,12 @@ class App extends Component {
                 <Settings
                     colors={this.state.colors}
                     handleChangeColor={this.handleChangeColor}
+                    handleChangeNodes={this.handleChangeNodes}
+                    nodes={this.state.nodes}
                 />
                 <GraphContainer
-                    generateJSON={this.generateJSON}/>
+                    generateJSON={this.generateJSON}
+                    nodes={this.state.nodes}/>
                 </div>
             </div>
         );
