@@ -18,7 +18,7 @@ class App extends Component {
             generatedNodes : [],
             generatedEdges : [],
         }
-
+        // this.generateNodesColors = this.generateNodesColors.bind(this);
         this.generateJSON = this.generateJSON.bind(this);
         this.generateColors = this.generateColors.bind(this);
         this.generateLinks = this.generateLinks.bind(this);
@@ -34,6 +34,16 @@ class App extends Component {
         this.generatePositionsArray = this.generatePositionsArray.bind(this);
     }
 
+    // generateNodesColors(nodes){
+    //     let array = [];
+
+    //     for (let node of nodes) {
+    //         array.push(Number(node.node), String(node.color))
+    //     }
+
+    //     return array;
+    // }
+
     generateJSON(nodes) {
         let jsonFile = {
             colors : this.generateColors(),
@@ -45,6 +55,13 @@ class App extends Component {
         axios.post('/problem', jsonFile)
             .then(res => {
                 console.log(res.data);
+                if(res.data.status == "satisfiable"){
+                    // render result
+                    // add color to the node
+                    // this.setState({
+                    //     generatedNodes: generateNodesColors(res.data.solutions)
+                    // })
+                }
             })
 
         // console.log('send to python')
@@ -120,6 +137,7 @@ class App extends Component {
         }
         return false
     }
+
 
     generateNodes(nodes) {
         let array = [];

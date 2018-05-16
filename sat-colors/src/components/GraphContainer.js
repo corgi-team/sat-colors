@@ -46,7 +46,7 @@ export default class GraphContainer extends Component {
                 addNode: this.addNode
             },
             physics: {
-                enabled: false,
+                enabled: false, //TODO: when it is enable you cannot change the color, maybe put it at the end
             },
             nodes: {
                 borderWidth: 1,
