@@ -4,3 +4,11 @@
 package-lock\.json
 
 server/node_modules/
+
+server/solver/graph\.json
+
+server/solver/solution
+
+server/solver/solution\.json
+
+server/solver/tmp_prob\.cnf
