@@ -59,6 +59,11 @@ export default class GraphContainer extends Component {
                 },
                 shape: 'ellipse'
             },
+            edges:{
+                color:{
+                    inherit: 'both'
+                }
+            },
             layout: {
                 randomSeed: undefined
             }
