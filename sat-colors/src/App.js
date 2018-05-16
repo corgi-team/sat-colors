@@ -58,8 +58,11 @@ class App extends Component {
                 if(res.data.status == "satisfiable"){
                     // render result
                     // add color to the node
+
+                    // error: 'generateNodesColors' is not defined
+                    // var nodes_colors = generateNodesColors(res.data.solutions)
                     // this.setState({
-                    //     generatedNodes: generateNodesColors(res.data.solutions)
+                    //     nodes: nodes_colors // posso usare nodes per passarlo a GraphContainer?
                     // })
                 }
             })
