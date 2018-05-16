@@ -22,6 +22,98 @@ export default class GraphContainer extends Component {
         this.addNode = this.addNode.bind(this);
     }
 
+    // function to generate a graph given a number of nodes
+    randomGenerateGraph(numberNodes){
+        // let nodes = new vis.DataSet([]);
+        // let edges = new vis.DataSet([]);
+
+        var nodes = [];
+        var edges = [];
+        var connectionCount = [];
+
+        options = {
+            manipulation: {
+                enabled: true,
+                initiallyActive: true,
+                deleteNode: true,
+                deleteEdge: true,
+                addNode: this.addNode
+            },
+            physics: {
+                enabled: false,
+            },
+            nodes: {
+                borderWidth: 1,
+                borderWidthSelected: 2,
+                color: {
+                    border: '#000',
+                    background: '#fff',
+                    highlight: {
+                        border: '#000',
+                        background: '#e3e3e3'
+                    }
+                },
+                font : {
+                    color: '#000',
+                    align: 'center',
+                },
+                shape: 'ellipse'
+            },
+            layout: {
+                randomSeed: undefined
+            }
+        };
+
+        // randomly create some nodes and edges
+        for (var i = 0; i < numberNodes; i++) {
+          nodes.push({
+            id: i,
+            label: String(i)
+          });
+
+          connectionCount[i] = 0;
+
+          // create edges in a scale-free-network way
+          if (i == 1) {
+            var from = i;
+            var to = 0;
+            edges.push({
+              from: from,
+              to: to
+            });
+            connectionCount[from]++;
+            connectionCount[to]++;
+          }
+          else if (i > 1) {
+            var conn = edges.length * 2;
+            var rand = Math.floor(Math.random() * conn);
+            var cum = 0;
+            var j = 0;
+            while (j < connectionCount.length && cum < rand) {
+              cum += connectionCount[j];
+              j++;
+            }
+            var from = i;
+            var to = j;
+            edges.push({
+              from: from,
+              to: to
+            });
+            connectionCount[from]++;
+            connectionCount[to]++;
+          }
+        }
+
+        let data = {
+            nodes: nodes,
+            edges: edges
+        }
+
+        var graphContainer = document.getElementById('graph');
+        network = new vis.Network(graphContainer, data, options);
+        // return {nodes:nodes, edges:edges};
+    }
+
     componentDidMount() {
         // Initialize the graph
         let nodes = new vis.DataSet([]);
@@ -55,9 +147,6 @@ export default class GraphContainer extends Component {
                 },
                 shape: 'ellipse'
             },
-            layout: {
-                randomSeed: undefined
-            }
         };
 
 
