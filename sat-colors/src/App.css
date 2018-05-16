@@ -31,7 +31,6 @@ div.vis-network div.vis-manipulation div.vis-button.vis-delete {
 div.vis-network div.vis-manipulation div.vis-button.vis-edit, div.vis-network div.vis-edit-mode div.vis-button.vis-edit {
     background-image: url('./img/edit.svg');
     margin-top: -10px;
-
 }
 
 div.vis-network div.vis-manipulation div.vis-button, div.vis-network div.vis-edit-mode div.vis-button {
@@ -41,19 +40,19 @@ div.vis-network div.vis-manipulation div.vis-button, div.vis-network div.vis-edi
 div.vis-network div.vis-manipulation div.vis-button:active {
     background-color: #f5f5f5;
     border-radius: 2px;
-    color: #b13728;
+    color: #7d7574;
 }
 
 div.vis-network div.vis-manipulation div.vis-button:hover {
     background-color: #f5f5f5;
     border-radius: 2px;
-    color: #b13728;
+    color: #7d7574;
 }
 
 div.vis-network div.vis-manipulation div.vis-button:focus {
     background-color: #f5f5f5;
     border-radius: 2px;
-    color: #b13728;
+    color: #7d7574;
 }
 
 div.vis-network div.vis-manipulation {
