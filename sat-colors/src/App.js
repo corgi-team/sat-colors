@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Banner from './components/Banner';
 import GraphContainer from './components/GraphContainer';
 import Settings from './components/Settings';
+// import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios';
+import axios from 'axios';
 import './App.css';
 
 
@@ -14,7 +16,7 @@ class App extends Component {
             colors: null,
             nodes: null,
             generatedNodes : [],
-            generatedEdges : []
+            generatedEdges : [],
         }
 
         this.generateJSON = this.generateJSON.bind(this);
@@ -35,8 +37,14 @@ class App extends Component {
             nodes : this.generateNodes(nodes)
         }
 
-        console.log('send to python')
-        console.log(jsonFile)
+        // post
+        axios.post('/problem', jsonFile)
+            .then(res => {
+                console.log(res.data);
+            })
+
+        // console.log('send to python')
+        // console.log(jsonFile)
     }
 
     // StackOverflow is love, StackOverflow is life
@@ -205,6 +213,22 @@ class App extends Component {
                     generatedNodes={this.state.generatedNodes}
                     generatedEdges={this.state.generatedEdges}/>
                 </div>
+                {/* <Post url="/problem" data={this.state.beforeJSON}>
+                    {(error, response, isLoading, onReload) => {
+                    if(error) {
+                        return (<div>Something bad happened: {error.message} <button onClick={() => onReload({ params: { reload: true } })}>Retry</button></div>)
+                    }
+                    else if(isLoading) {
+                        return (<div>Loading...</div>)
+                    }
+                    else if(response !== null) {
+                        return (<div>{response.data.message} <button onClick={() => onReload({ params: { refresh: true } })}>Refresh</button></div>)
+                    }
+                    return (<div>Default message before request is made.</div>)
+                    }}
+                </Post> */}
+                {/* <div id="gif-dog">
+                </div> */}
             </div>
         );
     }
