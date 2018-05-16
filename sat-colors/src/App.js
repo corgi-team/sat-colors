@@ -146,7 +146,6 @@ class App extends Component {
     }
 
     // Returns a random integer between min (included) and max (excluded)
-    // Using Math.round() will give you a non-uniform distribution!
     getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
@@ -154,10 +153,10 @@ class App extends Component {
 
     // generate random positions
     generatePositionsArray() {
-        var maxX = 2400;
-        var maxY = 1600;
-        var safeRadius = 5;
-        var irregularity = 50;
+        var maxX = 1600;
+        var maxY = 800;
+        var safeRadius = 2;
+        var irregularity = 300;
 
         // declarations
         var positionsArray = [];
