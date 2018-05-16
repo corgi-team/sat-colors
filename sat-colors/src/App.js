@@ -12,7 +12,9 @@ class App extends Component {
         this.state = {
             finalJSON : {},
             colors: null,
-            nodes: null
+            nodes: null,
+            generatedNodes : [],
+            generatedEdges : []
         }
 
         this.generateJSON = this.generateJSON.bind(this);
@@ -23,7 +25,7 @@ class App extends Component {
         this.handleChangeColor = this.handleChangeColor.bind(this);
         this.handleChangeNodes = this.handleChangeNodes.bind(this);
         this.hslToHex = this.hslToHex.bind(this);
-        // this.randomGenerateGraph = this.randomGenerateGraph.bind(this);
+        this.generateRandomNodes = this.generateRandomNodes.bind(this);
     }
 
     generateJSON(nodes) {
@@ -117,56 +119,6 @@ class App extends Component {
         return array;
     }
 
-    // PER SUSANNA <3: numberNodes sarebbe value in formNodesNumber (Settings.js)
-    // function to generate a graph given a number of nodes
-    // randomGenerateGraph(numberNodes){
-    //     var nodes = [];
-    //     var edges = [];
-    //     var connectionCount = [];
-
-    //     // randomly create some nodes and edges
-    //     for (var i = 0; i < numberNodes; i++) {
-    //       nodes.push({
-    //         id: i,
-    //         label: String(i)
-    //       });
-
-    //       connectionCount[i] = 0;
-
-    //       // create edges in a scale-free-network way
-    //       if (i == 1) {
-    //         var from = i;
-    //         var to = 0;
-    //         edges.push({
-    //           from: from,
-    //           to: to
-    //         });
-    //         connectionCount[from]++;
-    //         connectionCount[to]++;
-    //       }
-    //       else if (i > 1) {
-    //         var conn = edges.length * 2;
-    //         var rand = Math.floor(Math.random() * conn);
-    //         var cum = 0;
-    //         var j = 0;
-    //         while (j < connectionCount.length && cum < rand) {
-    //           cum += connectionCount[j];
-    //           j++;
-    //         }
-    //         var from = i;
-    //         var to = j;
-    //         edges.push({
-    //           from: from,
-    //           to: to
-    //         });
-    //         connectionCount[from]++;
-    //         connectionCount[to]++;
-    //       }
-    //     }
-
-    //     return {nodes:nodes, edges:edges};
-    // }
-
     handleChangeColor(e) {
         this.setState({
             colors: e.target.value
@@ -176,6 +128,62 @@ class App extends Component {
     handleChangeNodes(nodes) {
         this.setState({
             nodes: nodes
+        })
+
+        this.generateRandomNodes(nodes)
+    }
+
+    generateRandomNodes(nodes) {
+        var generatedNodes = [];
+        var generatedEdges = [];
+        var connectionCount = [];
+
+        // Randomly create some nodes and edges
+        for (let i = 0; i < nodes; i++) {
+            generatedNodes.push({
+                id: i,
+                label: String(i)
+            })
+
+            connectionCount[i] = 0;
+
+            // create edges in a scale-free-network way
+            if (i == 1) {
+                var from = i;
+                var to = 0;
+                generatedEdges.push({
+                    from: from,
+                    to: to
+                })
+
+                connectionCount[from]++;
+                connectionCount[to]++;
+            } else if (i > 1) {
+                var conn = generatedEdges.length * 2;
+                var rand = Math.floor(Math.random() * conn);
+                var cum = 0;
+                var j = 0;
+
+                while (j < connectionCount.length && cum < rand) {
+                    cum += connectionCount[j];
+                    j++;
+                }
+
+                var from = i;
+                var to = j;
+                generatedEdges.push({
+                    from: from,
+                    to: to
+                })
+
+                connectionCount[from]++;
+                connectionCount[to]++;
+            }
+        }
+
+        this.setState({
+            generatedNodes: generatedNodes,
+            generatedEdges: generatedEdges
         })
     }
 
@@ -193,7 +201,9 @@ class App extends Component {
                 />
                 <GraphContainer
                     generateJSON={this.generateJSON}
-                    nodes={this.state.nodes}/>
+                    nodes={this.state.nodes}
+                    generatedNodes={this.state.generatedNodes}
+                    generatedEdges={this.state.generatedEdges}/>
                 </div>
             </div>
         );
