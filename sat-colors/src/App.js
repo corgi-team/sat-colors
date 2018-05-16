@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Banner from './components/Banner';
 import GraphContainer from './components/GraphContainer';
 import Settings from './components/Settings';
-// import { AxiosProvider, Request, Get, Delete, Head, Post, Put, Patch, withAxios } from 'react-axios';
+import dogGif from './img/hello-dog.gif';
 import axios from 'axios';
 import './App.css';
 
@@ -28,6 +28,10 @@ class App extends Component {
         this.handleChangeNodes = this.handleChangeNodes.bind(this);
         this.hslToHex = this.hslToHex.bind(this);
         this.generateRandomNodes = this.generateRandomNodes.bind(this);
+
+        this.getRandomInt = this.getRandomInt.bind(this);
+        this.getRandomPosition = this.getRandomPosition.bind(this);
+        this.generatePositionsArray = this.generatePositionsArray.bind(this);
     }
 
     generateJSON(nodes) {
@@ -141,16 +145,82 @@ class App extends Component {
         this.generateRandomNodes(nodes)
     }
 
+    // Returns a random integer between min (included) and max (excluded)
+    // Using Math.round() will give you a non-uniform distribution!
+    getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+
+
+    // generate random positions
+    generatePositionsArray() {
+        var maxX = 2400;
+        var maxY = 1600;
+        var safeRadius = 5;
+        var irregularity = 50;
+
+        // declarations
+        var positionsArray = [];
+        var r, c;
+        var rows;
+        var columns;
+
+        // count the amount of rows and columns
+        rows = Math.floor(maxY / safeRadius);
+        columns = Math.floor(maxX / safeRadius);
+
+        // loop through rows
+        for (r = 1; r <= rows; r += 1) {
+            // loop through columns
+            for (c = 1; c <= columns; c += 1) {
+                // populate array with point object
+                positionsArray.push({
+                    x: Math.round(maxX * c / columns) + this.getRandomInt(irregularity * -1, irregularity),
+                    y: Math.round(maxY * r / rows) + this.getRandomInt(irregularity * -1, irregularity)
+                });
+            }
+        }
+        // return array
+        return positionsArray;
+    }
+
+    // get random position from positions array
+    getRandomPosition(array, removeTaken) {
+
+        // declarations
+        var randomIndex;
+        var coordinates;
+
+        // get random index
+        randomIndex = this.getRandomInt(0, array.length - 1);
+
+        // get random item from array
+        coordinates = array[randomIndex];
+
+        // check if remove taken
+        if (removeTaken) {
+            // remove element from array
+            array.splice(randomIndex, 1);
+        }
+
+        // return position
+        return coordinates;
+    }
+
     generateRandomNodes(nodes) {
         var generatedNodes = [];
         var generatedEdges = [];
         var connectionCount = [];
 
+        var positions = this.generatePositionsArray();
+
         // Randomly create some nodes and edges
         for (let i = 0; i < nodes; i++) {
             generatedNodes.push({
                 id: i,
-                label: String(i)
+                label: String(i),
+                x : this.getRandomPosition(positions, true).x,
+                y : this.getRandomPosition(positions, true).y
             })
 
             connectionCount[i] = 0;
@@ -207,28 +277,17 @@ class App extends Component {
                     handleChangeNodes={this.handleChangeNodes}
                     nodes={this.state.nodes}
                 />
-                <GraphContainer
-                    generateJSON={this.generateJSON}
-                    nodes={this.state.nodes}
-                    generatedNodes={this.state.generatedNodes}
-                    generatedEdges={this.state.generatedEdges}/>
+                <div>
+                    {/* <div id="gif-dog">
+                        <img src={dogGif}/>
+                    </div> */}
+                    <GraphContainer
+                        generateJSON={this.generateJSON}
+                        nodes={this.state.nodes}
+                        generatedNodes={this.state.generatedNodes}
+                        generatedEdges={this.state.generatedEdges}/>
+                    </div>
                 </div>
-                {/* <Post url="/problem" data={this.state.beforeJSON}>
-                    {(error, response, isLoading, onReload) => {
-                    if(error) {
-                        return (<div>Something bad happened: {error.message} <button onClick={() => onReload({ params: { reload: true } })}>Retry</button></div>)
-                    }
-                    else if(isLoading) {
-                        return (<div>Loading...</div>)
-                    }
-                    else if(response !== null) {
-                        return (<div>{response.data.message} <button onClick={() => onReload({ params: { refresh: true } })}>Refresh</button></div>)
-                    }
-                    return (<div>Default message before request is made.</div>)
-                    }}
-                </Post> */}
-                {/* <div id="gif-dog">
-                </div> */}
             </div>
         );
     }
