@@ -13,16 +13,20 @@ app.get('/', function(req, res){
 });
 
 app.post('/problem', function(req, res){
+  console.log("Problem received");
+
   fs.writeFileSync('solver/graph.json', JSON.stringify(req.body));
 
-  const child = exec('cd solver && python mapcolor.py graph.json', (error, stdout, stderr) => {
+  const child = exec('cd solver && python mapcolor.py graph.json', {maxBuffer: 1024 * 10000}, (error, stdout, stderr) => {
     if (error) {
       console.error(`exec error: ${error}`);
       return;
     }
 
     // console.log(`stdout: ${stdout}`);
-    console.log(`stderr: ${stderr}`);
+    // console.log(`stderr: ${stderr}`);
+
+    console.log("Problem solved");
 
     const solution = JSON.parse(fs.readFileSync('solver/solution.json', 'utf8'));
 

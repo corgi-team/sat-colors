@@ -86,8 +86,8 @@ def writeJson(facts):
     for f in facts:
         splitted = f.split(",")
         result["solutions"].append({"node": splitted[0], "color": colors[int(splitted[1])]})
-    print "result"
-    print facts
+    # print "result"
+    # print facts
     with open('solution.json', 'w') as outfile:
         json.dump(result, outfile)
 
@@ -107,12 +107,12 @@ if __name__ == '__main__':
         print "Usage: %s <graph.json>" % sys.argv[0]
         sys.exit(1)
 
-    readJson(sys.argv[1])    
-    
+    readJson(sys.argv[1])
+
     vars = gen_vars(len(colors), len(nodes))
-    print vars
+    # print vars
     rules = genGraphConstr(len(colors), len(nodes), len(links), vars)
-    print rules
+    # print rules
     head = printHeader(len(rules))
     rls = printCnf(rules)
 
@@ -125,7 +125,7 @@ if __name__ == '__main__':
     ms_out = Popen([minisat, "tmp_prob.cnf", "solution"], stdout=PIPE).communicate()[0]
 
     # Print the output, just out of curiosity
-    print ms_out
+    # print ms_out
 
     # minisat with these arguments writes the solution to a file called "solution".  Let's check it
     res = open("solution", "r").readlines()
