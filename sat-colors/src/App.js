@@ -37,18 +37,9 @@ class App extends Component {
         this.generateLinks = this.generateLinks.bind(this);
         this.checkLinks = this.checkLinks.bind(this);
         this.generateNodes = this.generateNodes.bind(this);
-
-        // this.generateNodesColors = this.generateNodesColors.bind(this);
-        
-        
-        
-        // this.handleChangeColor = this.handleChangeColor.bind(this);
-        // this.handleChangeNodes = this.handleChangeNodes.bind(this);
-        // this.generateRandomNodes = this.generateRandomNodes.bind(this);
-
-        // this.getRandomInt = this.getRandomInt.bind(this);
-        // this.getRandomPosition = this.getRandomPosition.bind(this);
-        // this.generatePositionsArray = this.generatePositionsArray.bind(this);
+        this.generateSolutons = this.generateSolutons.bind(this);
+        this.generateArrayNodes = this.generateArrayNodes.bind(this);
+        this.generateArrayEdges = this.generateArrayEdges.bind(this);
     }
 
     componentDidMount() {
@@ -204,17 +195,7 @@ class App extends Component {
         })
         axios.post('/problem', jsonFile)
         .then(res => {
-            console.log(res.data);
-            // if(res.data.status == "satisfiable"){
-                    // render result
-                    // add color to the node
-
-                    // error: 'generateNodesColors' is not defined
-                    // var nodes_colors = generateNodesColors(res.data.solutions)
-                    // this.setState({
-                    //     nodes: nodes_colors // posso usare nodes per passarlo a GraphContainer?
-                    // })
-                // }
+            this.generateSolutons(nodes, res.data);
         })
         .catch(err => console.log(err))
     }
@@ -317,89 +298,62 @@ class App extends Component {
         return array;
     }
 
+    generateSolutons(nodes, data) {
+        let newNodes = [];
 
-    // generateNodesColors(nodes){
-    //     let array = [];
+        for (let i = 0; i < data.solutions.length; i++) {
+            let foundNode = nodes.find(node => node.id == data.solutions[i].node);
 
-    //     for (let node of nodes) {
-    //         array.push(Number(node.node), String(node.color))
-    //     }
-
-    //     return array;
-    // }
-
-    // generateJSON(nodes) {
-        // let jsonFile = {
-        //     colors : this.generateColors(),
-        //     links : this.generateLinks(nodes),
-        //     nodes : this.generateNodes(nodes)
+            if (foundNode) {
+                foundNode.color = data.solutions[i].color;
+                newNodes.push(foundNode)
+            }
+        }
+        
+        let finalNodes = this.generateArrayNodes(newNodes);
+        let finalEdges = this.generateArrayEdges(newNodes);
+        console.log(finalEdges)
+        // let finalData = {
+        //     nodes: finalNodes,
+        //     edges: finalEdges
         // }
 
-    //     // console.log('send to python')
-    //     // console.log(jsonFile)
-    // }
+        // var graphContainer = document.getElementById('graph');
+        // network = new vis.Network(graphContainer, finalData, options);
+    }
 
+    generateArrayNodes(nodes) {
+        let newNodes = [];
+        for (let node of nodes) {
+            let newNode = {
+                id: node.id,
+                x: node.x,
+                y: node.y,
+                color: node.color
+            }
 
-    // // Returns a random integer between min (included) and max (excluded)
-    // getRandomInt(min, max) {
-    //     return Math.floor(Math.random() * (max - min)) + min;
-    // }
+            newNodes.push(newNode)
+        }
+        return newNodes;
+    }  
 
+    // RIMUOVI DUPLICATE EDGES
+    generateArrayEdges(nodes) {
+        let edges = [];
 
-    // // generate random positions
-    // generatePositionsArray() {
-    //     var maxX = 1600;
-    //     var maxY = 800;
-    //     var safeRadius = 2;
-    //     var irregularity = 300;
-
-    //     // declarations
-    //     var positionsArray = [];
-    //     var r, c;
-    //     var rows;
-    //     var columns;
-
-    //     // count the amount of rows and columns
-    //     rows = Math.floor(maxY / safeRadius);
-    //     columns = Math.floor(maxX / safeRadius);
-
-    //     // loop through rows
-    //     for (r = 1; r <= rows; r += 1) {
-    //         // loop through columns
-    //         for (c = 1; c <= columns; c += 1) {
-    //             // populate array with point object
-    //             positionsArray.push({
-    //                 x: Math.round(maxX * c / columns) + this.getRandomInt(irregularity * -1, irregularity),
-    //                 y: Math.round(maxY * r / rows) + this.getRandomInt(irregularity * -1, irregularity)
-    //             });
-    //         }
-    //     }
-    //     // return array
-    //     return positionsArray;
-    // }
-
-    // get random position from positions array
-    // getRandomPosition(array, removeTaken) {
-
-    //     // declarations
-    //     var randomIndex;
-    //     var coordinates;
-
-    //     // get random index
-    //     randomIndex = this.getRandomInt(0, array.length - 1);
-
-    //     // get random item from array
-    //     coordinates = array[randomIndex];
-
-    //     // check if remove taken
-    //     if (removeTaken) {
-    //         // remove element from array
-    //         array.splice(randomIndex, 1);
-    //     }
-
-    //     // return position
-    //     return coordinates;
-    // }
+        for (let node of nodes) {
+            for (let i = 0; i < node.connections.length; i++) {
+                let nodeId = Number(node.id)
+                let newEdge = {
+                    from: Number(node.id),
+                    to: node.connections[i],
+                    id: `node.id-`
+                }
+                edges.push(newEdge)
+            }
+        }
+        return edges;
+    }
 
     render() {
         return (
