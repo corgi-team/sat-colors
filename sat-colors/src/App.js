@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import ModalGenerateNodes from './components/ModalGenerateNodes'
+import ModalGenerateNodes from './components/ModalGenerateNodes';
+import ModalSat from './components/ModalSat';
 import '../node_modules/vis/dist/vis.css';
 import './App.css';
 // import Settings from './components/Settings';
@@ -20,6 +21,7 @@ class App extends Component {
 
         this.state = {
             modalNodes : false,
+            modalSat : false
             // finalJSON : {},
             // colors: null,
         }
@@ -27,6 +29,8 @@ class App extends Component {
         this.addNode = this.addNode.bind(this);
         this.showModalNodes = this.showModalNodes.bind(this);
         this.handleGenerateNodes = this.handleGenerateNodes.bind(this);
+        this.showModalSat = this.showModalSat.bind(this);
+        this.handleSat = this.handleSat.bind(this);
         // this.generateNodesColors = this.generateNodesColors.bind(this);
         // this.generateJSON = this.generateJSON.bind(this);
         // this.generateColors = this.generateColors.bind(this);
@@ -175,6 +179,15 @@ class App extends Component {
         network = new vis.Network(graphContainer, data, options);
     }
 
+    showModalSat() {
+        this.setState({
+            modalSat: !this.state.modalSat
+        })
+    }
+
+    handleSat(numberOfColors) {
+        console.log(numberOfColors)
+    }
 
     // generateNodesColors(nodes){
     //     let array = [];
@@ -380,6 +393,7 @@ class App extends Component {
 
                     <div className="Buttons-container">
                         <Button bsStyle="primary" onClick={() => this.showModalNodes()}>Create random graph</Button>
+                        <Button bsStyle="primary" onClick={() => this.showModalSat()}>Sat solver</Button>
                     </div>
                 </div>
 
@@ -388,6 +402,14 @@ class App extends Component {
                         showModal={this.state.modalNodes}
                         close={this.showModalNodes}
                         handleGenerateNodes={this.handleGenerateNodes}
+                    />
+                )}
+
+                {this.state.modalSat && (
+                    <ModalSat 
+                        showModal={this.state.modalSat}
+                        close={this.showModalSat}
+                        handleSat={this.handleSat}
                     />
                 )}
                 {/* <Settings

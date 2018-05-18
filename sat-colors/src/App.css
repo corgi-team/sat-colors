@@ -124,3 +124,9 @@ div.vis-close{
 .form-group {
     width: 100%;
 }
+
+.Buttons-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: inherit;
+}

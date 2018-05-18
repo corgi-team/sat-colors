@@ -15,6 +15,9 @@ export default class ModalGenerateNodes extends Component {
     }
 
     getValidationStateNumberNode() {
+        if (this.state.nodes == 0) {
+            return 'warning';
+        }
         if (!isNaN(parseFloat(this.state.nodes)) && isFinite(this.state.nodes)) {
             return 'success';
         }
