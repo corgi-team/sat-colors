@@ -33,12 +33,16 @@ class App extends Component {
         this.handleSat = this.handleSat.bind(this);
         this.generateColors = this.generateColors.bind(this);
         this.hslToHex = this.hslToHex.bind(this);
+        this.exportNetwork = this.exportNetwork.bind(this);
+        this.objectToArray = this.objectToArray.bind(this);
+        this.addConnections = this.addConnections.bind(this);
+        this.generateLinks = this.generateLinks.bind(this);
+        this.checkLinks = this.checkLinks.bind(this);
 
         // this.generateNodesColors = this.generateNodesColors.bind(this);
         // this.generateJSON = this.generateJSON.bind(this);
         
-        // this.generateLinks = this.generateLinks.bind(this);
-        // this.checkLinks = this.checkLinks.bind(this);
+        
         // this.generateNodes = this.generateNodes.bind(this);
         // this.handleChangeColor = this.handleChangeColor.bind(this);
         // this.handleChangeNodes = this.handleChangeNodes.bind(this);
@@ -188,9 +192,11 @@ class App extends Component {
     }
 
     handleSat(numberOfColors) {
+        var nodes = this.exportNetwork();
+
         let jsonFile = {
             colors : this.generateColors(numberOfColors),
-            // links : this.generateLinks(nodes),
+            links : this.generateLinks(nodes),
             // nodes : this.generateNodes(nodes)
         }
         console.log(jsonFile);
@@ -237,6 +243,54 @@ class App extends Component {
         return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
     }
 
+    exportNetwork() {
+        var nodes = this.objectToArray(network.getPositions());
+        nodes.forEach(this.addConnections);
+        return nodes;
+    }
+
+    // Create the object with x, y and id
+    objectToArray(object) {
+        return Object.keys(object).map((key) => {
+            object[key].id = key;
+            return object[key];
+        });
+    }
+
+    // Find the connections for each node
+    addConnections(node) {
+        node.connections = network.getConnectedNodes(node.id);
+    }
+
+    generateLinks(nodes) {
+        let links = []
+        for (let node of nodes) {
+            for (let connection of node.connections) {
+                let link = [Number(node.id), connection]
+                link.sort()
+
+                if (!this.checkLinks(links, link)) {
+                    links.push(link)
+                }
+            }
+        }
+        return links;
+    }
+
+    checkLinks(links, link) {
+        let i, current;
+        let check = false;
+        for (i = 0; i < links.length; i++) {
+            current = links[i];
+
+            if ((current[0] == link[0]) && (current[1] == link[1])) {
+                return true
+            }
+        }
+        return false
+    }
+
+
     // generateNodesColors(nodes){
     //     let array = [];
 
@@ -272,35 +326,6 @@ class App extends Component {
 
     //     // console.log('send to python')
     //     // console.log(jsonFile)
-    // }
-
-
-    // generateLinks(nodes) {
-    //     let links = []
-    //     for (let node of nodes) {
-    //         for (let connection of node.connections) {
-    //             let link = [Number(node.id), connection]
-    //             link.sort()
-
-    //             if (!this.checkLinks(links, link)) {
-    //                 links.push(link)
-    //             }
-    //         }
-    //     }
-    //     return links;
-    // }
-
-    // checkLinks(links, link) {
-    //     let i, current;
-    //     let check = false;
-    //     for (i = 0; i < links.length; i++) {
-    //         current = links[i];
-
-    //         if ((current[0] == link[0]) && (current[1] == link[1])) {
-    //             return true
-    //         }
-    //     }
-    //     return false
     // }
 
 
