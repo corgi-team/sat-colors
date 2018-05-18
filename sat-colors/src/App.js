@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 import ModalGenerateNodes from './components/ModalGenerateNodes';
 import ModalSat from './components/ModalSat';
+import axios from 'axios';
 import '../node_modules/vis/dist/vis.css';
 import './App.css';
-
-// import dogGif from './img/hello-dog.gif';
-// import axios from 'axios';
 
 
 // options for vis.js
@@ -15,15 +13,15 @@ var network;
 var options;
 var id = 0;
 
+
 class App extends Component {
     constructor() {
         super();
 
         this.state = {
             modalNodes : false,
-            modalSat : false
-            // finalJSON : {},
-            // colors: null,
+            modalSat : false,
+            loading: false
         }
 
         this.addNode = this.addNode.bind(this);
@@ -38,12 +36,12 @@ class App extends Component {
         this.addConnections = this.addConnections.bind(this);
         this.generateLinks = this.generateLinks.bind(this);
         this.checkLinks = this.checkLinks.bind(this);
+        this.generateNodes = this.generateNodes.bind(this);
 
         // this.generateNodesColors = this.generateNodesColors.bind(this);
-        // this.generateJSON = this.generateJSON.bind(this);
         
         
-        // this.generateNodes = this.generateNodes.bind(this);
+        
         // this.handleChangeColor = this.handleChangeColor.bind(this);
         // this.handleChangeNodes = this.handleChangeNodes.bind(this);
         // this.generateRandomNodes = this.generateRandomNodes.bind(this);
@@ -197,9 +195,28 @@ class App extends Component {
         let jsonFile = {
             colors : this.generateColors(numberOfColors),
             links : this.generateLinks(nodes),
-            // nodes : this.generateNodes(nodes)
+            nodes : this.generateNodes(nodes)
         }
-        console.log(jsonFile);
+        
+        // post
+        this.setState({
+            loading: true
+        })
+        axios.post('/problem', jsonFile)
+        .then(res => {
+            console.log(res.data);
+            // if(res.data.status == "satisfiable"){
+                    // render result
+                    // add color to the node
+
+                    // error: 'generateNodesColors' is not defined
+                    // var nodes_colors = generateNodesColors(res.data.solutions)
+                    // this.setState({
+                    //     nodes: nodes_colors // posso usare nodes per passarlo a GraphContainer?
+                    // })
+                // }
+        })
+        .catch(err => console.log(err))
     }
 
     // StackOverflow is love, StackOverflow is life
@@ -290,6 +307,16 @@ class App extends Component {
         return false
     }
 
+    generateNodes(nodes) {
+        let array = [];
+
+        for (let node of nodes) {
+            array.push(Number(node.id))
+        }
+
+        return array;
+    }
+
 
     // generateNodesColors(nodes){
     //     let array = [];
@@ -308,50 +335,10 @@ class App extends Component {
         //     nodes : this.generateNodes(nodes)
         // }
 
-    //     // post
-    //     axios.post('/problem', jsonFile)
-    //         .then(res => {
-    //             console.log(res.data);
-    //             if(res.data.status == "satisfiable"){
-    //                 // render result
-    //                 // add color to the node
-
-    //                 // error: 'generateNodesColors' is not defined
-    //                 // var nodes_colors = generateNodesColors(res.data.solutions)
-    //                 // this.setState({
-    //                 //     nodes: nodes_colors // posso usare nodes per passarlo a GraphContainer?
-    //                 // })
-    //             }
-    //         })
-
     //     // console.log('send to python')
     //     // console.log(jsonFile)
     // }
 
-
-    // generateNodes(nodes) {
-    //     let array = [];
-
-    //     for (let node of nodes) {
-    //         array.push(Number(node.id))
-    //     }
-
-    //     return array;
-    // }
-
-    // handleChangeColor(e) {
-    //     this.setState({
-    //         colors: e.target.value
-    //     })
-    // }
-
-    // handleChangeNodes(nodes) {
-    //     this.setState({
-    //         nodes: nodes
-    //     })
-
-    //     this.generateRandomNodes(nodes)
-    // }
 
     // // Returns a random integer between min (included) and max (excluded)
     // getRandomInt(min, max) {
@@ -442,21 +429,9 @@ class App extends Component {
                         showModal={this.state.modalSat}
                         close={this.showModalSat}
                         handleSat={this.handleSat}
+                        loading={this.state.loading}
                     />
                 )}
-                {/* <Settings
-                    colors={this.state.colors}
-                    handleChangeColor={this.handleChangeColor}
-                    handleChangeNodes={this.handleChangeNodes}
-                    nodes={this.state.nodes}
-                /> */}
-                {/* <div> */}
-                    {/* <div id="gif-dog">
-                        <img src={dogGif}/>
-                    </div> */}
-                
-                    {/* </div> */}
-                {/* </div> */}
             </div>
         );
     }

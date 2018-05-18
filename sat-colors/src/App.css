@@ -108,14 +108,12 @@ div.vis-close{
 }
 
 #gif-dog{
-    /* background-image: url('./img/hello-dog.gif');
-    position:absolute; */
-    height:500px;
-    width:500px;
     background-repeat: repeat-y;
+    text-align: center;
 }
 
-.modal-body {
+.sat-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
