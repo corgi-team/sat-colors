@@ -4,7 +4,7 @@ import ModalGenerateNodes from './components/ModalGenerateNodes';
 import ModalSat from './components/ModalSat';
 import '../node_modules/vis/dist/vis.css';
 import './App.css';
-// import Settings from './components/Settings';
+
 // import dogGif from './img/hello-dog.gif';
 // import axios from 'axios';
 
@@ -31,15 +31,17 @@ class App extends Component {
         this.handleGenerateNodes = this.handleGenerateNodes.bind(this);
         this.showModalSat = this.showModalSat.bind(this);
         this.handleSat = this.handleSat.bind(this);
+        this.generateColors = this.generateColors.bind(this);
+        this.hslToHex = this.hslToHex.bind(this);
+
         // this.generateNodesColors = this.generateNodesColors.bind(this);
         // this.generateJSON = this.generateJSON.bind(this);
-        // this.generateColors = this.generateColors.bind(this);
+        
         // this.generateLinks = this.generateLinks.bind(this);
         // this.checkLinks = this.checkLinks.bind(this);
         // this.generateNodes = this.generateNodes.bind(this);
         // this.handleChangeColor = this.handleChangeColor.bind(this);
         // this.handleChangeNodes = this.handleChangeNodes.bind(this);
-        // this.hslToHex = this.hslToHex.bind(this);
         // this.generateRandomNodes = this.generateRandomNodes.bind(this);
 
         // this.getRandomInt = this.getRandomInt.bind(this);
@@ -186,7 +188,53 @@ class App extends Component {
     }
 
     handleSat(numberOfColors) {
-        console.log(numberOfColors)
+        let jsonFile = {
+            colors : this.generateColors(numberOfColors),
+            // links : this.generateLinks(nodes),
+            // nodes : this.generateNodes(nodes)
+        }
+        console.log(jsonFile);
+    }
+
+    // StackOverflow is love, StackOverflow is life
+    generateColors(number) {
+        let colors = [];
+        for (let i = 0; i < 360; i += 360 / number) {
+            let hue = i;
+            let saturation = 90 + Math.random() * 10;
+            let lightness = 50 + Math.random() * 10;
+            colors.push(this.hslToHex(hue, saturation, lightness));
+        }
+        return colors;
+    }
+
+    hslToHex(h, s, l) {
+        h /= 360;
+        s /= 100;
+        l /= 100;
+        let r, g, b;
+        if (s === 0) {
+            r = g = b = l; // achromatic
+        } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            };
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+        const toHex = x => {
+            const hex = Math.round(x * 255).toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        };
+        return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
     }
 
     // generateNodesColors(nodes){
@@ -200,11 +248,11 @@ class App extends Component {
     // }
 
     // generateJSON(nodes) {
-    //     let jsonFile = {
-    //         colors : this.generateColors(),
-    //         links : this.generateLinks(nodes),
-    //         nodes : this.generateNodes(nodes)
-    //     }
+        // let jsonFile = {
+        //     colors : this.generateColors(),
+        //     links : this.generateLinks(nodes),
+        //     nodes : this.generateNodes(nodes)
+        // }
 
     //     // post
     //     axios.post('/problem', jsonFile)
@@ -226,47 +274,6 @@ class App extends Component {
     //     // console.log(jsonFile)
     // }
 
-    // StackOverflow is love, StackOverflow is life
-    // generateColors() {
-    //     let number = this.state.colors ? Number(this.state.colors) : 3
-    //     let colors = []
-    //     for (let i = 0; i < 360; i += 360 / number) {
-    //         let hue = i;
-    //         let saturation = 90 + Math.random() * 10;
-    //         let lightness = 50 + Math.random() * 10;
-    //         colors.push(this.hslToHex(hue, saturation, lightness));
-    //     }
-    //     return colors;
-    // }
-
-    // hslToHex(h, s, l) {
-    //     h /= 360;
-    //     s /= 100;
-    //     l /= 100;
-    //     let r, g, b;
-    //     if (s === 0) {
-    //       r = g = b = l; // achromatic
-    //     } else {
-    //       const hue2rgb = (p, q, t) => {
-    //         if (t < 0) t += 1;
-    //         if (t > 1) t -= 1;
-    //         if (t < 1 / 6) return p + (q - p) * 6 * t;
-    //         if (t < 1 / 2) return q;
-    //         if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-    //         return p;
-    //       };
-    //       const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    //       const p = 2 * l - q;
-    //       r = hue2rgb(p, q, h + 1 / 3);
-    //       g = hue2rgb(p, q, h);
-    //       b = hue2rgb(p, q, h - 1 / 3);
-    //     }
-    //     const toHex = x => {
-    //       const hex = Math.round(x * 255).toString(16);
-    //       return hex.length === 1 ? '0' + hex : hex;
-    //     };
-    //     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-    // }
 
     // generateLinks(nodes) {
     //     let links = []

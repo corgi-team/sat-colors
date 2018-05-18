@@ -46,7 +46,7 @@ export default class ModalSat extends Component {
                             onChange={this.handleChangeColor}
                         />
                     </FormGroup>
-                    <Button type="submit" onClick={() => this.props.handleSat(this.state.colors)}>Sat solver</Button>
+                    <Button type="submit" onClick={() => this.props.handleSat(this.state.colors > 0 ? this.state.colors : 3)}>Sat solver</Button>
                 </Modal.Body>
             </Modal>
         );
