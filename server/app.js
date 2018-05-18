@@ -15,7 +15,7 @@ app.get('/', function(req, res){
 app.post('/problem', function(req, res){
   fs.writeFileSync('solver/graph.json', JSON.stringify(req.body));
 
-  const child = exec('cd solver && python mapcolor.py graph.json', (error, stdout, stderr) => {
+  const child = exec('cd solver && python mapcolor.py graph.json', {maxBuffer: 1024 * 10000}, (error, stdout, stderr) => {
     if (error) {
       console.error(`exec error: ${error}`);
       return;
