@@ -262,6 +262,7 @@ class App extends Component {
 
     generateLinks(nodes) {
         let links = []
+        
         for (let node of nodes) {
             for (let connection of node.connections) {
                 let link = [Number(node.id), connection]
@@ -312,14 +313,19 @@ class App extends Component {
         
         let finalNodes = this.generateArrayNodes(newNodes);
         let finalEdges = this.generateArrayEdges(newNodes);
-        console.log(finalEdges)
-        // let finalData = {
-        //     nodes: finalNodes,
-        //     edges: finalEdges
-        // }
+        
+        let finalData = {
+            nodes: finalNodes,
+            edges: finalEdges
+        }
 
-        // var graphContainer = document.getElementById('graph');
-        // network = new vis.Network(graphContainer, finalData, options);
+        this.setState({
+            modalSat: false,
+            loading: false
+        })
+
+        var graphContainer = document.getElementById('graph');
+        network = new vis.Network(graphContainer, finalData, options);
     }
 
     generateArrayNodes(nodes) {
@@ -339,20 +345,19 @@ class App extends Component {
 
     // RIMUOVI DUPLICATE EDGES
     generateArrayEdges(nodes) {
-        let edges = [];
+        let edges = this.generateLinks(nodes);
+        let finalEdges = [];
 
-        for (let node of nodes) {
-            for (let i = 0; i < node.connections.length; i++) {
-                let nodeId = Number(node.id)
-                let newEdge = {
-                    from: Number(node.id),
-                    to: node.connections[i],
-                    id: `node.id-`
-                }
-                edges.push(newEdge)
+        for (let i = 0; i < edges.length; i++) {
+            let edge = {
+                from: edges[i][0],
+                to: edges[i][1],
+                id: `edge-${i}`
             }
+            finalEdges.push(edge)
         }
-        return edges;
+
+        return finalEdges
     }
 
     render() {
