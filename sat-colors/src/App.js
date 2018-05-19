@@ -112,15 +112,11 @@ class App extends Component {
         var edges = [];
         var connectionCount = [];
 
-        // var positions = this.generatePositionsArray();
-
         // Randomly create some nodes and edges
         for (let i = 0; i < numberOfNodes; i++) {
             nodes.push({
                 id: i,
-                label: String(i),
-                // x : this.getRandomPosition(positions, true).x,
-                // y : this.getRandomPosition(positions, true).y
+                label: String(i)
             })
 
             connectionCount[i] = 0;
@@ -364,14 +360,14 @@ class App extends Component {
         return (
             <div className="App">
                 <div className="App-container">
+                    <div className="Buttons-container">
+                        <Button bsStyle="primary" className="button-app" onClick={() => this.showModalNodes()}>Create random graph</Button>
+                        <Button bsStyle="success" className="button-app" onClick={() => this.showModalSat()}>Sat solver</Button>
+                    </div>
+
                     <div className="GraphContainer--container">
                         <div id="graph">
                         </div>
-                    </div>
-
-                    <div className="Buttons-container">
-                        <Button bsStyle="primary" onClick={() => this.showModalNodes()}>Create random graph</Button>
-                        <Button bsStyle="primary" onClick={() => this.showModalSat()}>Sat solver</Button>
                     </div>
                 </div>
 
