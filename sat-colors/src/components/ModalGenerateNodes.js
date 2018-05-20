@@ -7,7 +7,7 @@ export default class ModalGenerateNodes extends Component {
         super(props, context);
 
         this.state = {
-            nodes: 0
+            nodes: null
         }
 
         this.getValidationStateNumberNode = this.getValidationStateNumberNode.bind(this);
