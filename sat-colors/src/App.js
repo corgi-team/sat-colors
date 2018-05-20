@@ -21,7 +21,8 @@ class App extends Component {
         this.state = {
             modalNodes : false,
             modalSat : false,
-            loading: false
+            loading: false,
+            failed: false
         }
 
         this.addNode = this.addNode.bind(this);
@@ -172,7 +173,9 @@ class App extends Component {
 
     showModalSat() {
         this.setState({
-            modalSat: !this.state.modalSat
+            modalSat: !this.state.modalSat,
+            loading: false,
+            failed: false
         })
     }
 
@@ -297,10 +300,16 @@ class App extends Component {
 
     generateSolutons(nodes, data) {
         let newNodes = [];
+        
+        if (data.status == "unsatisfiable") {
+            this.setState({
+                failed: true
+            });
+            return;
+        }
 
         for (let i = 0; i < data.solutions.length; i++) {
             let foundNode = nodes.find(node => node.id == data.solutions[i].node);
-
             if (foundNode) {
                 foundNode.color = data.solutions[i].color;
                 newNodes.push(foundNode)
@@ -317,8 +326,9 @@ class App extends Component {
 
         this.setState({
             modalSat: false,
-            loading: false
-        })
+            loading: false,
+            failed: false
+        });
 
         var graphContainer = document.getElementById('graph');
         network = new vis.Network(graphContainer, finalData, options);
@@ -385,6 +395,7 @@ class App extends Component {
                         close={this.showModalSat}
                         handleSat={this.handleSat}
                         loading={this.state.loading}
+                        failed={this.state.failed}
                     />
                 )}
             </div>

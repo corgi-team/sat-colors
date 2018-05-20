@@ -7,7 +7,7 @@ export default class ModalSat extends Component {
         super(props, context);
 
         this.state = {
-            colors: 0
+            colors: 3
         }
 
         this.getValidationStateNumberColor = this.getValidationStateNumberColor.bind(this);
@@ -37,25 +37,30 @@ export default class ModalSat extends Component {
                     <Modal.Title>Test sat</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {this.props.loading ? (
+                    {this.props.loading && !this.props.failed ? (
                         <div className="sat-container">
                             <div id="gif-dog">
                                 <img src={dogGif}/>
                             </div>
                         </div>
-                    ) : (
-                        <div className="sat-container">
-                            <h4>Choose number of colors:</h4>
-                            <FormGroup controlId="formColorNumber" validationState={this.getValidationStateNumberColor()}>
-                                <FormControl
-                                    type="text"
-                                    value={this.state.colors}
-                                    placeholder="default: 3"
-                                    onChange={this.handleChangeColor}
-                                />
-                            </FormGroup>
-                            <Button type="submit" onClick={() => this.props.handleSat(this.state.colors > 0 ? this.state.colors : 3)}>Sat solver</Button>
-                        </div>
+                    ) : (this.props.failed ? (
+                            <div className="sat-container">
+                                <h4>❌ Problem Unsatisfiable</h4>
+                            </div>
+                        ) : (
+                            <div className="sat-container">
+                                <h4>Choose number of colors:</h4>
+                                <FormGroup controlId="formColorNumber" validationState={this.getValidationStateNumberColor()}>
+                                    <FormControl
+                                        type="text"
+                                        value={this.state.colors}
+                                        placeholder="default: 3"
+                                        onChange={this.handleChangeColor}
+                                    />
+                                </FormGroup>
+                                <Button type="submit" onClick={() => this.props.handleSat(this.state.colors)}>Sat solver</Button>
+                            </div>
+                        )
                     )}
                 </Modal.Body>
             </Modal>
