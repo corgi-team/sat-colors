@@ -250,6 +250,8 @@ class App extends Component {
     objectToArray(object) {
         return Object.keys(object).map((key) => {
             object[key].id = key;
+            object[key].label = key.toString();
+            console.log(object[key])
             return object[key];
         });
     }
@@ -312,6 +314,7 @@ class App extends Component {
             let foundNode = nodes.find(node => node.id == data.solutions[i].node);
             if (foundNode) {
                 foundNode.color = data.solutions[i].color;
+                foundNode.label = foundNode.id.toString();
                 newNodes.push(foundNode)
             }
         }
@@ -341,7 +344,8 @@ class App extends Component {
                 id: node.id,
                 x: node.x,
                 y: node.y,
-                color: node.color
+                color: node.color,
+                label: node.id.toString()
             }
 
             newNodes.push(newNode)
