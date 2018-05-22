@@ -60,6 +60,9 @@ class App extends Component {
                 smooth: {
                     forceDirection: "none",
                     roundness: 0.15
+                },
+                color:{
+                    inherit: 'both'
                 }
             },
             physics: {
@@ -164,7 +167,7 @@ class App extends Component {
         this.setState({
             modalNodes: false
         })
-        
+
         id = numberOfNodes;
 
         var graphContainer = document.getElementById('graph');
@@ -187,7 +190,7 @@ class App extends Component {
             links : this.generateLinks(nodes),
             nodes : this.generateNodes(nodes)
         }
-        
+
         // post
         this.setState({
             loading: true
@@ -263,7 +266,7 @@ class App extends Component {
 
     generateLinks(nodes) {
         let links = []
-        
+
         for (let node of nodes) {
             for (let connection of node.connections) {
                 let link = [Number(node.id), connection]
@@ -302,7 +305,7 @@ class App extends Component {
 
     generateSolutons(nodes, data) {
         let newNodes = [];
-        
+
         if (data.status == "unsatisfiable") {
             this.setState({
                 failed: true
@@ -318,10 +321,10 @@ class App extends Component {
                 newNodes.push(foundNode)
             }
         }
-        
+
         let finalNodes = this.generateArrayNodes(newNodes);
         let finalEdges = this.generateArrayEdges(newNodes);
-        
+
         let finalData = {
             nodes: finalNodes,
             edges: finalEdges
@@ -351,7 +354,7 @@ class App extends Component {
             newNodes.push(newNode)
         }
         return newNodes;
-    }  
+    }
 
     // RIMUOVI DUPLICATE EDGES
     generateArrayEdges(nodes) {
@@ -386,7 +389,7 @@ class App extends Component {
                 </div>
 
                 {this.state.modalNodes && (
-                    <ModalGenerateNodes 
+                    <ModalGenerateNodes
                         showModal={this.state.modalNodes}
                         close={this.showModalNodes}
                         handleGenerateNodes={this.handleGenerateNodes}
@@ -394,7 +397,7 @@ class App extends Component {
                 )}
 
                 {this.state.modalSat && (
-                    <ModalSat 
+                    <ModalSat
                         showModal={this.state.modalSat}
                         close={this.showModalSat}
                         handleSat={this.handleSat}
