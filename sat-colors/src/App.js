@@ -378,8 +378,8 @@ class App extends Component {
             <div className="App">
                 <div className="App-container">
                     <div className="Buttons-container">
-                        <Button bsStyle="primary" className="button-app" onClick={() => this.showModalNodes()}>Create random graph</Button>
-                        <Button bsStyle="success" className="button-app" onClick={() => this.showModalSat()}>Sat solver</Button>
+                        <Button bsStyle="primary" className="button-app" onClick={() => this.showModalNodes()}>Create Random Graph</Button>
+                        <Button bsStyle="success" className="button-app" onClick={() => this.showModalSat()}>Run SAT Solver</Button>
                     </div>
 
                     <div className="GraphContainer--container">
