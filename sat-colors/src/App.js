@@ -123,7 +123,7 @@ class App extends Component {
         // Randomly create some nodes and edges
         for (let i = 0; i < numberOfNodes; i++) {
             nodes.push({
-                id: i,
+                id: Number(i),
                 label: String(i)
             })
 
@@ -224,8 +224,8 @@ class App extends Component {
     convertEdges(links) {
         convertedEdges = [];
         for (let edge of links) {
-            let indexOfStart = convertedNodes.indexOf(edge[0])
-            let indexOfEnd = convertedNodes.indexOf(edge[1])
+            let indexOfStart = convertedNodes.indexOf(Number(edge[0]))
+            let indexOfEnd = convertedNodes.indexOf(Number(edge[1]))
             convertedEdges.push([indexOfStart, indexOfEnd])
         }
     }
@@ -296,7 +296,7 @@ class App extends Component {
 
         for (let node of nodes) {
             for (let connection of node.connections) {
-                let link = [Number(node.id), connection]
+                let link = [Number(node.id), Number(connection)]
                 link.sort()
 
                 if (!this.checkLinks(links, link)) {
@@ -390,8 +390,8 @@ class App extends Component {
 
         for (let i = 0; i < edges.length; i++) {
             let edge = {
-                from: edges[i][0],
-                to: edges[i][1],
+                from: Number(edges[i][0]),
+                to: Number(edges[i][1]),
                 id: `edge-${i}`
             }
             finalEdges.push(edge)
