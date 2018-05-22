@@ -168,7 +168,7 @@ class App extends Component {
             modalNodes: false
         })
 
-        id = numberOfNodes;
+        id = Number(numberOfNodes);
 
         var graphContainer = document.getElementById('graph');
         network = new vis.Network(graphContainer, data, options);
