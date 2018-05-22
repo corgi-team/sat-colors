@@ -12,6 +12,8 @@ let vis = require('vis');
 var network;
 var options;
 var id = 0;
+var convertedNodes = [];
+var convertedEdges = [];
 
 
 class App extends Component {
@@ -41,6 +43,8 @@ class App extends Component {
         this.generateSolutons = this.generateSolutons.bind(this);
         this.generateArrayNodes = this.generateArrayNodes.bind(this);
         this.generateArrayEdges = this.generateArrayEdges.bind(this);
+        this.convertNodes = this.convertNodes.bind(this);
+        this.convertEdges = this.convertEdges.bind(this);
     }
 
     componentDidMount() {
@@ -184,11 +188,19 @@ class App extends Component {
 
     handleSat(numberOfColors) {
         var nodes = this.exportNetwork();
+        var generatedNodes = this.generateNodes(nodes);
+        this.convertNodes(generatedNodes);
+        let finalNodes = [];
+        for (let i = 0; i < convertedNodes.length; i++) {
+            finalNodes.push(i)
+        }
+        let generatedLinks = this.generateLinks(nodes);
+        this.convertEdges(generatedLinks)
 
         let jsonFile = {
             colors : this.generateColors(numberOfColors),
-            links : this.generateLinks(nodes),
-            nodes : this.generateNodes(nodes)
+            links : convertedEdges,
+            nodes : finalNodes
         }
 
         // post
@@ -200,6 +212,22 @@ class App extends Component {
             this.generateSolutons(nodes, res.data);
         })
         .catch(err => console.log(err))
+    }
+
+    convertNodes(nodes) {
+        convertedNodes = []
+        for (let node of nodes) {
+            convertedNodes.push(node)
+        }
+    }
+
+    convertEdges(links) {
+        convertedEdges = [];
+        for (let edge of links) {
+            let indexOfStart = convertedNodes.indexOf(edge[0])
+            let indexOfEnd = convertedNodes.indexOf(edge[1])
+            convertedEdges.push([indexOfStart, indexOfEnd])
+        }
     }
 
     // StackOverflow is love, StackOverflow is life
@@ -254,7 +282,6 @@ class App extends Component {
         return Object.keys(object).map((key) => {
             object[key].id = key;
             object[key].label = key.toString();
-            console.log(object[key])
             return object[key];
         });
     }
@@ -314,7 +341,7 @@ class App extends Component {
         }
 
         for (let i = 0; i < data.solutions.length; i++) {
-            let foundNode = nodes.find(node => node.id == data.solutions[i].node);
+            let foundNode = nodes.find(node => node.id == convertedNodes[data.solutions[i].node]);
             if (foundNode) {
                 foundNode.color = data.solutions[i].color;
                 foundNode.label = foundNode.id.toString();
